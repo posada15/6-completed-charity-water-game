@@ -7,6 +7,28 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Floating sound toggle -->
+  <button id="sound-toggle" class="sound-toggle" type="button"
+          aria-pressed="true" aria-label="Mute sound">
+    <svg class="icon icon-sound-on" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+      <path d="M16 8.5a4 4 0 010 7"/>
+      <path d="M19 5a8 8 0 010 14"/>
+    </svg>
+    <svg class="icon icon-sound-off" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+      <path d="M16 9l4 4m0-4l-4 4"/>
+    </svg>
+  </button>
+
+  <!-- Milestone toasts mount here -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
   <main class="app">
 
     <header class="brand-header">
@@ -29,16 +51,26 @@
 
       <h1>Water Quest</h1>
       <p class="tagline">
-        Collect <strong>20 yellow Jerry Cans</strong> before the timer runs out.
-        Watch out for dirty water — it will cost you a can.
+        Collect <strong id="goal-display">20 yellow Jerry Cans</strong> before the timer runs out.
+        Watch out for dirty water — it will cost you cans.
       </p>
     </header>
+
+    <!-- Difficulty selector -->
+    <div class="difficulty" aria-label="Difficulty selection">
+      <div class="difficulty-options" role="group" aria-label="Difficulty">
+        <button type="button" class="difficulty-btn" data-difficulty="easy"    aria-pressed="false">Easy</button>
+        <button type="button" class="difficulty-btn is-active" data-difficulty="normal" aria-pressed="true">Normal</button>
+        <button type="button" class="difficulty-btn" data-difficulty="hard"    aria-pressed="false">Hard</button>
+      </div>
+      <p class="difficulty-hint" id="difficulty-hint">20 cans · 30s · moderate dirty water</p>
+    </div>
 
     <section class="stats" aria-label="Game statistics">
       <div class="stat stat--cans">
         <span class="stat-label">Cans Collected</span>
         <span class="stat-value">
-          <span id="current-cans">0</span><span class="stat-goal">/ 20</span>
+          <span id="current-cans">0</span><span class="stat-goal">/ <span id="goal-value">20</span></span>
         </span>
       </div>
       <div class="stat stat--time">
@@ -62,6 +94,25 @@
       Tip: press <kbd>1</kbd>–<kbd>9</kbd> to hit a tile, or use <kbd>Tab</kbd> + <kbd>Space</kbd>.
     </p>
   </main>
+
+  <footer class="site-footer">
+    <p class="footer-mission">
+      Every Jerry Can you tap represents real progress toward clean water for all.
+      703 million people still live without it.
+    </p>
+    <nav class="footer-links" aria-label="charity: water links">
+      <a href="https://www.charitywater.org/" target="_blank" rel="noopener noreferrer">
+        Learn more at charitywater.org
+      </a>
+      <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">
+        Donate to the mission
+      </a>
+    </nav>
+    <p class="footer-note">
+      Water Quest is a fan-made game inspired by charity: water's mission.
+      Please visit their site to support the real work.
+    </p>
+  </footer>
 
   <div id="overlay" class="overlay" hidden>
     <div class="overlay-card"
