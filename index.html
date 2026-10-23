@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Quest — charity: water</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+
+    <header class="brand-header">
+      <div class="brand-lockup" aria-label="charity: water">
+        <svg class="brand-can" viewBox="0 0 100 130" aria-hidden="true" focusable="false">
+          <g fill="#FFC907">
+            <rect x="16" y="6" width="18" height="16" rx="4"/>
+            <rect x="66" y="8" width="18" height="14" rx="4"/>
+            <rect x="6" y="14" width="88" height="112" rx="16"/>
+          </g>
+          <rect x="30" y="26" width="40" height="12" rx="6" fill="#FFFFFF"/>
+          <g stroke="#FFFFFF" stroke-width="12" stroke-linecap="round">
+            <line x1="26" y1="52" x2="74" y2="102"/>
+            <line x1="74" y1="52" x2="26" y2="102"/>
+          </g>
+          <rect x="38" y="64" width="24" height="26" rx="6" fill="#FFC907"/>
+        </svg>
+        <span class="brand-name">charity: water</span>
+      </div>
+
+      <h1>Water Quest</h1>
+      <p class="tagline">
+        Collect <strong>20 yellow Jerry Cans</strong> before the timer runs out.
+        Watch out for dirty water — it will cost you a can.
+      </p>
+    </header>
+
+    <section class="stats" aria-label="Game statistics">
+      <div class="stat stat--cans">
+        <span class="stat-label">Cans Collected</span>
+        <span class="stat-value">
+          <span id="current-cans">0</span><span class="stat-goal">/ 20</span>
+        </span>
+      </div>
+      <div class="stat stat--time">
+        <span class="stat-label">Time Left</span>
+        <span class="stat-value">
+          <span id="timer">30</span><span class="stat-goal">s</span>
+        </span>
+      </div>
+    </section>
+
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+
+    <div id="game-grid" class="game-grid" aria-label="Game board"></div>
+
+    <div class="controls">
+      <button id="start-game" class="btn btn--primary" type="button">Start Game</button>
+      <button id="reset-game" class="btn btn--secondary" type="button" disabled>Reset</button>
+    </div>
+
+    <p class="keyboard-hint">
+      Tip: press <kbd>1</kbd>–<kbd>9</kbd> to hit a tile, or use <kbd>Tab</kbd> + <kbd>Space</kbd>.
+    </p>
+  </main>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="overlay-card"
+         role="dialog" aria-modal="true"
+         aria-labelledby="overlay-title"
+         aria-describedby="overlay-message">
+      <h2 id="overlay-title"></h2>
+      <p id="overlay-message"></p>
+      <div class="overlay-actions">
+        <button id="play-again" class="btn btn--primary" type="button">Play Again</button>
+        <button id="close-overlay" class="btn btn--ghost" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="confetti" class="confetti-canvas" aria-hidden="true"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>

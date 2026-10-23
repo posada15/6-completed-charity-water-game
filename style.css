@@ -1,0 +1,409 @@
+/* =========================================================
+   charity: water brand palette (from brand guide PDF)
+   ========================================================= */
+:root {
+  --cw-yellow:      #FFC907;
+  --cw-yellow-dark: #E5B400;
+  --cw-dark-blue:   #003366;
+  --cw-blue:        #2E9DF7;
+  --cw-light-blue:  #77A8BB;
+  --cw-cream:       #FFF7E1;
+  --cw-peach:       #FED8C1;
+  --cw-coral:       #BF6C46;
+  --cw-gray:        #CBCCD1;
+  --cw-black:       #1A1A1A;
+  --cw-white:       #FFFFFF;
+
+  --radius: 14px;
+  --shadow: 0 6px 20px rgba(0, 51, 102, 0.10);
+
+  --font-display: "Avenir Next", Avenir, "Proxima Nova",
+                  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Proxima Nova", "Avenir Next", Avenir,
+               system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-logo: Georgia, "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--cw-black);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255, 201, 7, 0.14), transparent 42%),
+    radial-gradient(circle at 85% 100%, rgba(119, 168, 187, 0.18), transparent 42%),
+    var(--cw-cream);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =========================================================
+   Layout
+   ========================================================= */
+.app {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* =========================================================
+   Brand header
+   ========================================================= */
+.brand-header { text-align: center; }
+
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cw-black);
+  font-family: var(--font-logo);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.brand-can {
+  width: 22px;
+  height: 28px;
+  display: block;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5.5vw, 40px);
+  margin: 14px 0 8px;
+  color: var(--cw-dark-blue);
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin: 0 auto;
+  max-width: 460px;
+  color: #4a5a6a;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.tagline strong { color: var(--cw-dark-blue); }
+
+/* =========================================================
+   Stats
+   ========================================================= */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat {
+  background: var(--cw-white);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 6px solid var(--cw-yellow);
+}
+.stat--time { border-left-color: var(--cw-dark-blue); }
+
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a8794;
+  font-weight: 700;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--cw-dark-blue);
+  line-height: 1;
+}
+
+.stat-goal {
+  font-size: 15px;
+  color: #8a97a4;
+  margin-left: 4px;
+  font-weight: 700;
+}
+
+/* score pulse on change */
+#current-cans.pulse {
+  display: inline-block;
+  animation: score-pulse 0.4s ease;
+}
+@keyframes score-pulse {
+  0%   { transform: scale(1);    color: var(--cw-dark-blue); }
+  40%  { transform: scale(1.28); color: var(--cw-yellow-dark); }
+  100% { transform: scale(1);    color: var(--cw-dark-blue); }
+}
+
+/* =========================================================
+   Feedback banner
+   ========================================================= */
+.feedback {
+  min-height: 26px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--cw-dark-blue);
+  transition: color 0.2s;
+}
+.feedback.is-good { color: var(--cw-dark-blue); }
+.feedback.is-bad  { color: #8F3A1E; }
+
+/* =========================================================
+   Game grid
+   ========================================================= */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: var(--cw-white);
+  padding: 12px;
+  border-radius: calc(var(--radius) + 6px);
+  box-shadow: var(--shadow);
+}
+
+.grid-cell {
+  position: relative;
+  aspect-ratio: 1;
+  border: 2px solid #F5EDD6;
+  background: #FFFCF0;
+  border-radius: var(--radius);
+  padding: 0;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background-color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* Only cells holding an item are meaningfully clickable */
+.grid-cell[data-type="can"],
+.grid-cell[data-type="dirty"] {
+  cursor: pointer;
+  background: var(--cw-white);
+}
+
+.grid-cell[data-type="can"]:hover { border-color: var(--cw-yellow); }
+.grid-cell[data-type="dirty"]:hover { border-color: var(--cw-coral); }
+
+.grid-cell:focus-visible {
+  outline: 3px solid var(--cw-blue);
+  outline-offset: 2px;
+}
+
+/* hit / miss animations */
+.grid-cell.is-hit        { animation: cell-hit 0.35s ease; }
+.grid-cell.is-dirty-hit  {
+  animation: cell-shake 0.4s ease;
+  background: #FBE9E2;
+  border-color: var(--cw-coral);
+}
+
+@keyframes cell-hit {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes cell-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* Item wrapper — brand-safe: contain, never squish or circle-crop */
+.item {
+  width: 82%;
+  height: 82%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* let the button receive the click */
+  animation: pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.item svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes pop-in {
+  0%   { transform: scale(0.3) rotate(-14deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg);     opacity: 1; }
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+.controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: transform 0.1s ease, box-shadow 0.2s ease,
+              background-color 0.2s ease;
+}
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:focus-visible {
+  outline: 3px solid var(--cw-blue);
+  outline-offset: 3px;
+}
+
+.btn--primary {
+  background: var(--cw-yellow);
+  color: var(--cw-black);
+  box-shadow: 0 6px 0 var(--cw-yellow-dark), 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+.btn--primary:hover:not(:disabled)  { background: #FFD42E; }
+.btn--primary:active:not(:disabled) { box-shadow: 0 2px 0 var(--cw-yellow-dark); }
+
+.btn--secondary,
+.btn--ghost {
+  background: var(--cw-white);
+  color: var(--cw-dark-blue);
+  box-shadow: var(--shadow);
+}
+.btn--secondary:hover:not(:disabled),
+.btn--ghost:hover:not(:disabled) { background: #F4F8FB; }
+
+/* =========================================================
+   Keyboard hint
+   ========================================================= */
+.keyboard-hint {
+  text-align: center;
+  font-size: 13px;
+  color: #7a8794;
+  margin: 0;
+}
+.keyboard-hint kbd {
+  background: var(--cw-white);
+  border: 1px solid var(--cw-gray);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--cw-dark-blue);
+}
+
+/* =========================================================
+   Overlay
+   ========================================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 51, 102, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  animation: fade-in 0.25s ease;
+}
+.overlay[hidden] { display: none; }
+
+.overlay-card {
+  background: var(--cw-white);
+  border-radius: 20px;
+  padding: 32px 28px 26px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+  animation: card-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.overlay-card h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  margin: 0 0 8px;
+  color: var(--cw-dark-blue);
+}
+
+.overlay-card p {
+  margin: 0 0 22px;
+  color: #4a5a6a;
+  line-height: 1.55;
+}
+
+.overlay-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes card-pop {
+  0%   { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+/* =========================================================
+   Confetti canvas
+   ========================================================= */
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 90;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 480px) {
+  .app { padding: 20px 14px 32px; gap: 16px; }
+  .game-grid { gap: 8px; padding: 8px; }
+  .stat { padding: 12px 14px; }
+  .stat-value { font-size: 22px; }
+  .controls { flex-direction: column; }
+  .btn { width: 100%; }
+}
+
+/* =========================================================
+   Reduced motion
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
